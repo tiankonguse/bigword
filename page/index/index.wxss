@@ -1,5 +1,5 @@
 /**index.wxss**/
-
+@import "../common/index.wxss";
 .container-box {
   background-color: #efeff4;
 }

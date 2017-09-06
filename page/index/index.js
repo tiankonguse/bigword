@@ -1,4 +1,5 @@
 // pages/main/index.js
+var app = getApp()
 Page({
     data: {
         title:"生成名言图片",
@@ -14,7 +15,8 @@ Page({
         showHeight: 0,
         showWidth: 0,
         mycanvas: "mycanvas",
-        systemInfo: {}
+        systemInfo: {},
+        hasUserInfo: false
     },
     onLoad: function (options) {
     },

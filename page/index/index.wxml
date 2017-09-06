@@ -16,7 +16,7 @@
             <button formType="submit" class="bornbtn" type="primary">{{btnText}}</button>
         </form>
     </view>
-    <navigator class="page-foot" openType="navigate" url="/page/component/index" hover-class="none">
+    <navigator class="page-foot" openType="switchTab" url="/page/component/index" hover-class="none">
         <view wx:if="{{desc}}" class="page-head-desc">{{desc}}</view>
     </navigator>
     <view hidden="{{maskHidden}}" class="mask"></view>

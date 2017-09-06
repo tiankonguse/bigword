@@ -44,7 +44,9 @@ App({
     globalData: {
         hasLogin: false,
         openid: null,
-        userInfo: null
+        userInfo: null,
+        AppID: "wxe9d370b20c760b2c",
+        AppSecret: "4ffcf61f4e159300cb4edead77480b1a"
     },
     getUserOpenId: function (callback) {
         var self = this
