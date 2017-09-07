@@ -6,8 +6,8 @@ Page({
         desc:"by tiankonguse",
         btnText:"生成名言",
         lableName:"你的名言",
-        imagePath: "../../image/default.jpg",
-        defaultImagePath: "../../image/default.jpg",
+        imagePath: "../../image/black.jpg",
+        defaultImagePath: "../../image/black.jpg",
         name: "",
         defaultName: "这里输入名言",
         maskHidden: true,
@@ -119,10 +119,10 @@ Page({
         });
         //var context = wx.createContext();
         var context = wx.createCanvasContext(that.data.mycanvas);
-        context.setFillStyle('white')
+        context.setFillStyle('black')
         context.fillRect(0, 0, showWidth, showWidth)
         context.setFontSize(35)
-        context.setFillStyle('black')
+        context.setFillStyle('white')
         context.setTextAlign("center");// 'left','center','right'
         context.fillText(that.data.name, showWidth / 2, showWidth / 2 );//必须为（0,0）原点
         context.restore();
