@@ -2,13 +2,17 @@
 <view class="index">
     <view class="">
         <view class="userinfo">
-            <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        <block wx:if="{{hasUserInfo === false}}">
+          <text class="page-body-text">你拒接了我</text>
+        </block>
+        <block wx:if="{{hasUserInfo === true}}">
+          <text class="userinfo-nickname">你好，{{userInfo.nickName}}</text>
+        </block>
         </view>
     </view>
     <view class="container-box">
         <view class="img-box">
-            <image bindtap="previewImg" mode="scaleToFill" src="{{imagePath}}"></image>
+            <image bindtap="previewImg" src="{{imagePath}}" style="width:{{systemInfo.screenWidth}}px; height:{{systemInfo.screenWidth}}px;"></image>
         </view>
         <form bindsubmit="formSubmit">
             <view class="input-row">

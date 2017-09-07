@@ -1,39 +1,105 @@
 //app.js
-const openIdUrl = require('./config').openIdUrl
+const config = require('./config');
+const openIdUrl = config.openIdUrl
+const host = config.host
 
 App({
+    config: {
+        host: host
+    },
+    getUserInfo: function (res){
+        var app = this;
+        wx.getUserInfo({
+            success: function (res) {
+                console.log("getUserInfo success", res);
+
+                app.globalData.hasLogin = true
+                app.globalData.userInfo = res.userInfo
+
+                // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                // 所以此处加入 callback 以防止这种情况
+                if (app.userInfoReadyCallback) {
+                    app.userInfoReadyCallback(res)
+                }
+            },
+            fail: res => {
+                //设置默认头像
+                console.log("getUserInfo fail", res);
+            },
+            complete: res => {
+                console.log("getUserInfo complete", res);
+            },
+        })
+    },
+    _getUserInfo: function(res){
+        var app = this;
+        this._getSetting('scope.userInfo', function (res){
+            app.getUserInfo(res);
+        })
+    },
+    authorize: function (scope, cb) {
+        var app = this;
+        wx.authorize({
+            scope: scope,
+            success: res => {
+                console.log("authorize success", res);
+                if (cb) {
+                    cb(res);
+                }
+            },
+            fail: res => {
+                console.log("authorize fail", res);
+            },
+            complete: res => {
+                console.log("authorize complete", res);
+            }
+        })
+    },
+    _getSetting: function (scope, cb) {
+        var app = this;
+        // 获取用户信息
+        wx.getSetting({
+            success: res => {
+                console.log("getSetting success", res);
+                if (res.authSetting[scope]) {
+                    if (cb){
+                        cb(res);
+                    }
+                }else{
+                    app.authorize(scope, cb)
+                }
+            },
+            fail: res => {
+                console.log("getSetting fail", res);
+            },
+            complete: res => {
+                console.log("getSetting complete", res);
+            }
+        })
+    },
     onLaunch: function () {
+        var app = this
         // 展示本地存储能力
         var logs = wx.getStorageSync('logs') || []
         logs.unshift(Date.now())
         wx.setStorageSync('logs', logs)
 
-        // 登录
-        wx.login({
-            success: res => {
-                // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            }
-        })
-        // 获取用户信息
-        wx.getSetting({
-            success: res => {
-                if (res.authSetting['scope.userInfo']) {
-                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                    wx.getUserInfo({
-                        success: res => {
-                            // 可以将 res 发送给后台解码出 unionId
-                            this.globalData.userInfo = res.userInfo
-
-                            // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                            // 所以此处加入 callback 以防止这种情况
-                            if (this.userInfoReadyCallback) {
-                                this.userInfoReadyCallback(res)
-                            }
-                        }
-                    })
+        if (app.globalData.hasLogin === false) {
+            wx.login({
+                success: res=>{
+                    app._getUserInfo(res)
+                },
+                fail: res => {
+                    console.log("login fail", res);
+                },
+                complete: res => {
+                    console.log("login complete", res);
                 }
-            }
-        })
+            })
+        } else {
+            app. _getUserInfo({ "errMsg": "login:ok", "code": app.globalData.loginCode })
+        }
+
     },
     onShow: function () {
         console.log('App Show')
@@ -42,6 +108,7 @@ App({
         console.log('App Hide')
     },
     globalData: {
+        loginCode: "",
         hasLogin: false,
         openid: null,
         userInfo: null,

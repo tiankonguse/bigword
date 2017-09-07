@@ -1,71 +1,74 @@
 /**index.wxss**/
 @import "../common/index.wxss";
+
 .container-box {
-  background-color: #efeff4;
+    background-color: #efeff4;
 }
 
 .img-box {
-  padding: 32rpx;
-  background-color: #fff;
-  border-bottom: 1rpx solid #e5e5e5;
-  position: relative;
+    padding: 0rpx;
+    background-color: #fff;
+    border-bottom: 0rpx solid #e5e5e5;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-.img-box image {
-  background-color: #f9f9f9;
-}
+
 
 .input-row {
-  margin: 30rpx auto;
-  border-bottom: 1rpx solid #e5e5e5;
-  border-top: 1rpx solid #e5e5e5;
-  display: flex;
-  align-items: center;
-  height: 88rpx;
-  padding: 0 32rpx;
-  background-color: #fff;
-  font-size: 34rpx;
-  color: #000;
+    margin: 30rpx auto;
+    border-bottom: 1rpx solid #e5e5e5;
+    border-top: 1rpx solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    height: 88rpx;
+    padding: 0 32rpx;
+    background-color: #fff;
+    font-size: 34rpx;
+    color: #000;
 }
 
 .input-row input {
-  margin-left: 100rpx;
-  width: 300rpx;
+    margin-left: 100rpx;
+    width: 300rpx;
 }
 
 .bornbtn {
-  width: 686rpx;
-  margin: auto;
+    width: 686rpx;
+    margin: auto;
 }
 
 .mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
 
-
 .userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:10px;
 }
 
 .userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+    width: 128rpx;
+    height: 128rpx;
+    margin: 20rpx;
+    border-radius: 50%;
 }
 
 .userinfo-nickname {
-  color: #aaa;
+    color: #aaa;
 }
 
 .usermotto {
-  margin-top: 100px;
+    margin-top: 100px;
 }

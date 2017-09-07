@@ -2,14 +2,14 @@
 var app = getApp()
 Page({
     data: {
-        title:"生成名言图片",
+        title:"生成白色名言图片",
         desc:"by tiankonguse",
         btnText:"生成名言",
         lableName:"你的名言",
-        imagePath: "../../image/white.jpg",
-        defaultImagePath: "../../image/white.jpg",
+        imagePath: "../../image/white.png",
+        defaultImagePath: "../../image/white.png",
         name: "",
-        defaultName: "这里输入名言",
+        defaultName: "白色名言",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -25,9 +25,11 @@ Page({
     onReady: function () {
         var that = this
         var systemInfo = wx.getSystemInfoSync();
-        this.data.systemInfo = systemInfo
-        this.data.showWidth = systemInfo.screenWidth
-        this.data.showHeight = systemInfo.screenHeight 
+        this.setData({
+            systemInfo: systemInfo,
+            showWidth: systemInfo.screenWidth,
+            showHeight: systemInfo.screenHeight
+        })
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,

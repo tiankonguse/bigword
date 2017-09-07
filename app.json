@@ -4,6 +4,12 @@
         "page/white/index",
         "page/index/index",
         "page/logs/logs",
+        "page/main/main",
+        "page/config/config",
+        "page/https/https",
+        "page/session/session",
+        "page/websocket/websocket",
+        "page/game/game",
         "page/component/index",
         "page/component/pages/view/view",
         "page/component/pages/scroll-view/scroll-view",
@@ -88,6 +94,12 @@
                 "iconPath": "image/icon_component.png",
                 "selectedIconPath": "image/icon_component_HL.png",
                 "text": "黑白"
+            },
+            {
+                "pagePath": "page/main/main",
+                "iconPath": "image/icon_component.png",
+                "selectedIconPath": "image/icon_component_HL.png",
+                "text": "实验室"
             }
         ]
     },
