@@ -2,6 +2,7 @@
     "pages": [
         "page/black/index",
         "page/white/index",
+        "page/nine/index",
         "page/index/index",
         "page/logs/logs",
         "page/main/main",
@@ -85,21 +86,21 @@
         "list": [
             {
                 "pagePath": "page/black/index",
-                "iconPath": "image/icon_API.png",
-                "selectedIconPath": "image/icon_API_HL.png",
-                "text": "白黑"
+                "iconPath": "image/icon_white.png",
+                "selectedIconPath": "image/icon_white_HL.png",
+                "text": "字"
             },
             {
                 "pagePath": "page/white/index",
-                "iconPath": "image/icon_component.png",
-                "selectedIconPath": "image/icon_component_HL.png",
-                "text": "黑白"
+                "iconPath": "image/icon_black.png",
+                "selectedIconPath": "image/icon_black_HL.png",
+                "text": "字"
             },
             {
-                "pagePath": "page/main/main",
+                "pagePath": "page/nine/index",
                 "iconPath": "image/icon_component.png",
                 "selectedIconPath": "image/icon_component_HL.png",
-                "text": "实验室"
+                "text": "九宫格"
             }
         ]
     },

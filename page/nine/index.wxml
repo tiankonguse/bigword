@@ -1,0 +1,29 @@
+<!--index.wxml-->
+<view class="index">
+    <view class="">
+        <view class="userinfo">
+        <block wx:if="{{hasUserInfo === false}}">
+          <text class="page-body-text">你拒接了我</text>
+        </block>
+        <block wx:if="{{hasUserInfo === true}}">
+          <text class="userinfo-nickname">你好，{{userInfo.nickName}}</text>
+        </block>
+        </view>
+    </view>
+    <view class="container-box">
+        <view class="img-box">
+            <image bindtap="previewImg" src="{{imagePath}}" style="width:{{systemInfo.screenWidth}}px; height:{{systemInfo.screenWidth}}px;"></image>
+        </view>
+        <form bindsubmit="formSubmit">
+            <view class="input-row">
+                <label>{{lableName}}</label>
+                <input name='name' type="text" maxlength="20" placeholder="{{defaultName}}" />
+            </view>
+            <button formType="submit" class="bornbtn" type="primary">{{btnText}}</button>
+        </form>
+    </view>
+    <view hidden="{{maskHidden}}" class="mask"></view>
+    <view class="canvas-box">
+        <canvas hidden="{{canvasHidden}}" style="width: 750rpx;height: 750rpx;" canvas-id="mycanvas" />
+    </view>
+</view>
