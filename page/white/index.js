@@ -2,14 +2,14 @@
 var app = getApp()
 Page({
     data: {
-        title:"生成白色名言图片",
-        desc:"by tiankonguse",
-        btnText:"生成名言",
-        lableName:"你的名言",
+        title: "生成白色名言图片",
+        desc: "by tiankonguse",
+        btnText: "生成名言",
+        lableName: "你的名言",
         imagePath: "../../image/white.png",
         defaultImagePath: "../../image/white.png",
         name: "",
-        defaultName: "白色名言",
+        defaultName: "朋友圈专用图",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -20,20 +20,36 @@ Page({
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo')
     },
+    onShareAppMessage: function (options) {
+        //options  = {"from":"button|menu", "target": button|undefined}
+        var that = this
+        if (options.from === 'button') {
+            // 来自页面内转发按钮
+            console.log(options.target)
+        }
+        return {
+            title: app.globalData.shareTitle,
+            path: '/page/black/index',
+            success: function (res) {
+                // 转发成功
+            },
+            fail: function (res) {
+                // 转发失败
+            }
+        }
+    },
     onLoad: function (options) {
     },
     onReady: function () {
         var that = this
-        var systemInfo = wx.getSystemInfoSync();
-        this.setData({
-            systemInfo: systemInfo,
-            showWidth: systemInfo.screenWidth,
-            showHeight: systemInfo.screenHeight
-        })
+        var systemInfo = app.globalData.systemInfo;
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
-                hasUserInfo: true
+                hasUserInfo: true,
+                systemInfo: systemInfo,
+                showWidth: systemInfo.screenWidth,
+                showHeight: systemInfo.screenHeight
             })
         } else if (this.data.canIUse) {
             // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -41,7 +57,10 @@ Page({
             app.userInfoReadyCallback = res => {
                 this.setData({
                     userInfo: res.userInfo,
-                    hasUserInfo: true
+                    hasUserInfo: true,
+                    systemInfo: systemInfo,
+                    showWidth: systemInfo.screenWidth,
+                    showHeight: systemInfo.screenHeight
                 })
             }
         } else {
@@ -51,7 +70,10 @@ Page({
                     app.globalData.userInfo = res.userInfo
                     this.setData({
                         userInfo: res.userInfo,
-                        hasUserInfo: true
+                        hasUserInfo: true,
+                        systemInfo: systemInfo,
+                        showWidth: systemInfo.screenWidth,
+                        showHeight: systemInfo.screenHeight
                     })
                 }
             })
@@ -126,7 +148,7 @@ Page({
         context.setFontSize(35)
         context.setFillStyle('black')
         context.setTextAlign("center");// 'left','center','right'
-        context.fillText(that.data.name, showWidth / 2, showWidth / 2 );//必须为（0,0）原点
+        context.fillText(that.data.name, showWidth / 2, showWidth / 2);//必须为（0,0）原点
         context.restore();
         context.draw()
 
@@ -139,7 +161,7 @@ Page({
     },
     previewImg: function (e) {
         var img = this.data.imagePath
-        if (img == this.data.defaultImagePath){
+        if (img == this.data.defaultImagePath) {
             wx.showToast({
                 title: '请先生成图片',
                 icon: 'loading',

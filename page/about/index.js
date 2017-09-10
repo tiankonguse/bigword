@@ -2,51 +2,28 @@
 var app = getApp()
 Page({
     data: {
-        title:"生成黑色名言图片",
-        desc:"by tiankonguse",
-        btnText:"生成名言",
-        lableName:"你的名言",
-        imagePath: "../../image/black.png",
-        defaultImagePath: "../../image/black.png",
-        name: "",
-        defaultName: "图不重要看文字",
+        title: "个人主页",
+        desc: "by tiankonguse",
+        userInfo: {
+            avatarUrl: "/image/account-filling.png",
+            nickName: ""
+        },
+        nickDefaultName: "你拒接了我",
+        hasUserInfo: false,
+        bigwordCode: "/image/bigword-code.jpg",
+        imagePath: "",
+        bigwordCodeText: "保存小程序码，快速进入名言图片",
         maskHidden: true,
         canvasHidden: true,
+        systemInfo: {},
         showHeight: 0,
         showWidth: 0,
         mycanvas: "mycanvas",
-        systemInfo: {},
-        userInfo: {},
-        hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
-    },
-    onShareAppMessage: function (options) {
-        //options  = {"from":"button|menu", "target": button|undefined}
-        var that = this
-        if (options.from === 'button') {
-            // 来自页面内转发按钮
-            console.log(options.target)
-        }
-        return {
-            title: app.globalData.shareTitle,
-            path: '/page/black/index',
-            success: function (res) {
-                // 转发成功
-            },
-            fail: function (res) {
-                // 转发失败
-            },
-            complete: function (res) {
-                // 转发失败
-            }
-        }
     },
     onLoad: function (options) {
-    },
-    onReady: function () {
         var that = this
         var systemInfo = app.globalData.systemInfo;
-
+ 
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
@@ -83,6 +60,9 @@ Page({
             })
         }
     },
+    onReady: function () {
+      
+    },
     onShow: function () {
     },
     onHide: function () {
@@ -96,28 +76,21 @@ Page({
     },
     saveFile: function (tempFilePath, cb) {
         var that = this
-        wx.saveFile({
-            tempFilePath: tempFilePath,
-            success: function success(res) {
+        wx.saveImageToPhotosAlbum({
+            filePath: tempFilePath,
+            success: function (res) {
                 console.log("success", res);
-                that.setData({
-                    imagePath: res.savedFilePath,
-                    canvasHidden: true,
-                });
-                if (cb) {
-                    cb()
+                if (cb){
+                    cb();
                 }
             },
             fail: function (res) {
                 console.log("fail", res);
-                if (cb) {
-                    cb()
-                }
             },
             complete: function (res) {
                 console.log("complete", res);
             }
-        });
+        })
     },
     canvasToFile: function (cb) {
         var that = this
@@ -142,50 +115,66 @@ Page({
         var that = this
         var showWidth = that.data.showWidth
         var showHeight = that.data.showHeight
-        this.setData({
-            canvasHidden: false
-        });
-        //var context = wx.createContext();
+        
         var context = wx.createCanvasContext(that.data.mycanvas);
-        context.setFillStyle('black')
-        context.fillRect(0, 0, showWidth, showWidth)
-        context.setFontSize(35)
         context.setFillStyle('white')
-        context.setTextAlign("center");// 'left','center','right'
-        context.fillText(that.data.name, showWidth / 2, showWidth / 2 );//必须为（0,0）原点
-        context.restore();
+        context.fillRect(0, 0, showWidth, showWidth)
+        context.drawImage(that.data.bigwordCode, 0, 0, showWidth, showWidth)
         context.draw()
 
-        //wx.drawCanvas({
-        //    canvasId: that.data.mycanvas,
-        //    actions: context.getActions()
-        //});
         //将生成好的图片保存到本地
         that.canvasToFile(cb)
     },
-    previewImg: function (e) {
-        var img = this.data.imagePath
-        if (img == this.data.defaultImagePath){
-            wx.showToast({
-                title: '请先生成图片',
-                icon: 'loading',
-                duration: 1000
+    saveImg: function (e) {
+        var that = this;
+        this.setData({
+            maskHidden: false,
+            canvasHidden: false
+        });
+        wx.showToast({
+            title: '保存中...',
+            icon: 'loading',
+            duration: 2000
+        }); 
+        setTimeout(function () {
+            that.createNewImg(function () {
+                that.setData({
+                    maskHidden: true,
+                    canvasHidden: true
+                });
+                wx.showToast({
+                    title: '已保存',
+                    icon: 'success',
+                    duration: 2000
+                });
             });
-            return
-        }
-        wx.previewImage({
-            current: img,
-            urls: [img],
+        }, 2000)
+
+    },
+    previewImg: function (e) {
+        var img = this.data.bigwordCode
+        wx.downloadFile({
+            url: img,
             success: function (res) {
-                console.log("success", res);
-            },
-            fail: function (res) {
-                console.log("fail", res);
-            },
-            complete: function (res) {
-                console.log("complete", res);
+                var path = res.tempFilePath
+                console.log(res)
+                wx.previewImage({
+                    current: path,
+                    urls: [path],
+                    success: function (res) {
+                        console.log("success", res);
+                    },
+                    fail: function (res) {
+                        console.log("fail", res);
+                    },
+                    complete: function (res) {
+                        console.log("complete", res);
+                    }
+                })
             }
         })
+
+
     },
     formSubmit: function (e) {
         var that = this;

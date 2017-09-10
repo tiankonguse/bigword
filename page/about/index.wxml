@@ -1,0 +1,57 @@
+<!--index.wxml-->
+<view class="index">
+    <view class="index-bd">
+        <view class="kind-list">
+            <block>
+                <view class="kind-list-item">
+                    <view wx:if="{{hasUserInfo === false}}" class="kind-list-item-hd">
+                        <view class="kind-list-text">
+                            <block>
+                                <view class="about-userinfo-nickname">{{nickDefaultName}}</view>
+                            </block>
+                        </view>
+                    </view>
+                    <view wx:if="{{hasUserInfo === true}}" class="kind-list-item-hd">
+                        <image class="kind-list-img about-userinfo-avatarUrl" src="{{userInfo.avatarUrl}}"></image>
+                        <view class="kind-list-text">
+                            <block>
+                                <view class="about-userinfo-nickname">{{userInfo.nickName}}</view>
+                                <view class="about-userinfo-country">{{userInfo.country}}</view>
+                            </block>
+                        </view>
+                    </view>
+
+                </view>
+            </block>
+            <block>
+                <view class="kind-list-item">
+                    <view id="" class="kind-list-item-hd kind-list-item-hd-code">
+                        <image  class="kind-list-img about-bigwordCode" src="{{bigwordCode}}"></image>
+                        <view class="about-bigwordCode-text">{{bigwordCodeText}}</view>
+                    </view>
+                </view>
+            </block>
+            <block>
+                <view class="kind-list-item ">
+                    <view id="" class="kind-list-item-hd about-hd">
+                        <view class="kind-list-text">
+                            <view class="about-save">
+                                <button type="primary" bindtap="saveImg">保存小程序码</button>
+                            </view>
+                            <view class="about-contact">
+                                <button type="primary" open-type="contact">反馈问题</button>
+                            </view>
+                            <view class="about-share">
+                                <button type="primary" open-type="share">分享此工具</button>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+        <view hidden="{{maskHidden}}" class="mask"></view>
+    <view class="canvas-box">
+        <canvas hidden="{{canvasHidden}}" style="width: 750rpx;height: 750rpx;" canvas-id="mycanvas" />
+    </view>
+</view>

@@ -7,6 +7,16 @@ App({
     config: {
         host: host
     },
+    globalData: {
+        loginCode: "",
+        hasLogin: false,
+        openid: null,
+        userInfo: null,
+        AppID: "wxe9d370b20c760b2c",
+        AppSecret: "4ffcf61f4e159300cb4edead77480b1a",
+        shareTitle: "快速生成名言图片",
+        systemInfo: {}
+    },
     getUserInfo: function (res){
         var app = this;
         wx.getUserInfo({
@@ -33,9 +43,10 @@ App({
     },
     _getUserInfo: function(res){
         var app = this;
-        this._getSetting('scope.userInfo', function (res){
-            app.getUserInfo(res);
-        })
+        app.getUserInfo(res);
+        //this._getSetting('scope.userInfo', function (res){
+        //    app.getUserInfo(res);
+        //})
     },
     authorize: function (scope, cb) {
         var app = this;
@@ -80,6 +91,9 @@ App({
     onLaunch: function () {
         var app = this
         // 展示本地存储能力
+
+        app.globalData.systemInfo = wx.getSystemInfoSync();
+        
         var logs = wx.getStorageSync('logs') || []
         logs.unshift(Date.now())
         wx.setStorageSync('logs', logs)
@@ -106,14 +120,6 @@ App({
     },
     onHide: function () {
         console.log('App Hide')
-    },
-    globalData: {
-        loginCode: "",
-        hasLogin: false,
-        openid: null,
-        userInfo: null,
-        AppID: "wxe9d370b20c760b2c",
-        AppSecret: "4ffcf61f4e159300cb4edead77480b1a"
     },
     getUserOpenId: function (callback) {
         var self = this
