@@ -6,10 +6,10 @@ Page({
         desc:"by tiankonguse",
         btnText:"生成名言",
         lableName:"你的名言",
-        imagePath: "../../image/black.png",
-        defaultImagePath: "../../image/black.png",
+        imagePath: "../../image/black.jpg",
+        defaultImagePath: "../../image/black.jpg",
         name: "",
-        defaultName: "图不重要看文字",
+        defaultName: "这里输入文字",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -18,10 +18,10 @@ Page({
         systemInfo: {},
         userInfo: {},
         hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
+        canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        fontSize: 35
     },
     onShareAppMessage: function (options) {
-        //options  = {"from":"button|menu", "target": button|undefined}
         var that = this
         if (options.from === 'button') {
             // 来自页面内转发按钮
@@ -45,26 +45,26 @@ Page({
     },
     onReady: function () {
         var that = this
-        var systemInfo = app.globalData.systemInfo;
+        var systemInfo = app.globalData.systemInfo
+        var screenWidth = systemInfo.screenWidth
+        var screenHeight = systemInfo.screenHeight
 
         if (app.globalData.userInfo) {
-            this.setData({
+            that.setData({
                 userInfo: app.globalData.userInfo,
                 hasUserInfo: true,
                 systemInfo: systemInfo,
-                showWidth: systemInfo.screenWidth,
-                showHeight: systemInfo.screenHeight
+                showWidth: screenWidth,
+                showHeight: screenHeight
             })
         } else if (this.data.canIUse) {
-            // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-            // 所以此处加入 callback 以防止这种情况
             app.userInfoReadyCallback = res => {
-                this.setData({
+                that.setData({
                     userInfo: res.userInfo,
                     hasUserInfo: true,
                     systemInfo: systemInfo,
-                    showWidth: systemInfo.screenWidth,
-                    showHeight: systemInfo.screenHeight
+                    showWidth: screenWidth,
+                    showHeight: screenHeight
                 })
             }
         } else {
@@ -72,12 +72,12 @@ Page({
             wx.getUserInfo({
                 success: res => {
                     app.globalData.userInfo = res.userInfo
-                    this.setData({
+                    that.setData({
                         userInfo: res.userInfo,
                         hasUserInfo: true,
                         systemInfo: systemInfo,
-                        showWidth: systemInfo.screenWidth,
-                        showHeight: systemInfo.screenHeight
+                        showWidth: screenWidth,
+                        showHeight: screenHeight
                     })
                 }
             })
@@ -141,25 +141,21 @@ Page({
     createNewImg: function (cb) {
         var that = this
         var showWidth = that.data.showWidth
-        var showHeight = that.data.showHeight
-        this.setData({
-            canvasHidden: false
-        });
-        //var context = wx.createContext();
-        var context = wx.createCanvasContext(that.data.mycanvas);
-        context.setFillStyle('black')
-        context.fillRect(0, 0, showWidth, showWidth)
-        context.setFontSize(35)
-        context.setFillStyle('white')
+        var showHeight = showWidth
+        var context = wx.createCanvasContext(that.data.mycanvas)
+        var fontSize = that.data.fontSize
+        var fontColor = "white"
+        var fillColor = "black"
+
+        context.setFillStyle(fillColor)
+        context.fillRect(0, 0, showWidth, showHeight)
+        context.setFontSize(fontSize)
+        context.setFillStyle(fontColor)
         context.setTextAlign("center");// 'left','center','right'
-        context.fillText(that.data.name, showWidth / 2, showWidth / 2 );//必须为（0,0）原点
+        context.fillText(that.data.name, showWidth / 2, (showHeight + fontSize) / 2 );//必须为（0,0）原点
         context.restore();
         context.draw()
 
-        //wx.drawCanvas({
-        //    canvasId: that.data.mycanvas,
-        //    actions: context.getActions()
-        //});
         //将生成好的图片保存到本地
         that.canvasToFile(cb)
     },
@@ -189,10 +185,12 @@ Page({
     },
     formSubmit: function (e) {
         var that = this;
-        var name = e.detail.value.name;
+        var name = e.detail.value.name
+        var fontSize = e.detail.value.fontSize
         name = name == "" ? this.data.defaultName : name;
         this.setData({
             name: name,
+            fontSize: fontSize,
             maskHidden: false,
             canvasHidden: false
         });
@@ -204,7 +202,10 @@ Page({
         setTimeout(function () {
             wx.hideToast()
             that.createNewImg(function () {
-                that.hideCanva()
+                that.setData({
+                    maskHidden: true,
+                    canvasHidden: true
+                });
 
                 wx.showToast({
                     title: '点击图片后长按可保存',

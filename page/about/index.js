@@ -20,6 +20,26 @@ Page({
         showWidth: 0,
         mycanvas: "mycanvas",
     },
+    onShareAppMessage: function (options) {
+        var that = this
+        if (options.from === 'button') {
+            // 来自页面内转发按钮
+            console.log(options.target)
+        }
+        return {
+            title: app.globalData.shareTitle,
+            path: '/page/about/index',
+            success: function (res) {
+                // 转发成功
+            },
+            fail: function (res) {
+                // 转发失败
+            },
+            complete: function (res) {
+                // 转发失败
+            }
+        }
+    },
     onLoad: function (options) {
         var that = this
         var systemInfo = app.globalData.systemInfo;

@@ -34,8 +34,8 @@
 }
 
 .input-row input {
-    margin-left: 100rpx;
-    width: 300rpx;
+    margin:10px 18px;
+    padding:0;
 }
 
 .bornbtn {
@@ -72,5 +72,14 @@
 }
 
 .usermotto {
-    margin-top: 100px;
+    margin-top: 200rpx;
+}
+
+.lableName{
+    width:30%;
+    color: #ccc;
+}
+
+.inputName{
+    width:65%;
 }

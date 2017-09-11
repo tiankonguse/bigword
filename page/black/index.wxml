@@ -12,12 +12,16 @@
     </view>
     <view class="container-box">
         <view class="img-box">
-            <image bindtap="previewImg" src="{{imagePath}}" style="width:{{systemInfo.screenWidth}}px; height:{{systemInfo.screenWidth}}px;"></image>
+            <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showWidth}}px; height:{{showWidth}}px;"></image>
         </view>
         <form bindsubmit="formSubmit">
             <view class="input-row">
-                <label>{{lableName}}</label>
-                <input name='name' type="text" maxlength="20" placeholder="{{defaultName}}" />
+                <label class="lableName">{{lableName}}</label>
+                <input name='name' type="text" maxlength="20" placeholder="{{defaultName}}"  class="inputName"/>
+            </view>
+            <view class="input-row">
+                <label class="lableName">字体大小</label>
+                <slider name='fontSize' value="35" min="35" max="155"  step="30" show-value class="inputName"/>
             </view>
             <button formType="submit" class="bornbtn" type="primary">{{btnText}}</button>
         </form>

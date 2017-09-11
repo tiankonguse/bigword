@@ -6,10 +6,10 @@ Page({
         desc: "by tiankonguse",
         btnText: "生成名言",
         lableName: "你的名言",
-        imagePath: "../../image/white.png",
-        defaultImagePath: "../../image/white.png",
+        imagePath: "../../image/white.jpg",
+        defaultImagePath: "../../image/white.jpg",
         name: "",
-        defaultName: "朋友圈专用图",
+        defaultName: "这里输入文字",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -18,10 +18,10 @@ Page({
         systemInfo: {},
         userInfo: {},
         hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
+        canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        fontSize: 35
     },
     onShareAppMessage: function (options) {
-        //options  = {"from":"button|menu", "target": button|undefined}
         var that = this
         if (options.from === 'button') {
             // 来自页面内转发按钮
@@ -43,13 +43,15 @@ Page({
     onReady: function () {
         var that = this
         var systemInfo = app.globalData.systemInfo;
+        var screenWidth = systemInfo.screenWidth 
+        var screenHeight = systemInfo.screenHeight 
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
                 hasUserInfo: true,
                 systemInfo: systemInfo,
-                showWidth: systemInfo.screenWidth,
-                showHeight: systemInfo.screenHeight
+                showWidth: screenWidth,
+                showHeight: screenHeight
             })
         } else if (this.data.canIUse) {
             // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -59,8 +61,8 @@ Page({
                     userInfo: res.userInfo,
                     hasUserInfo: true,
                     systemInfo: systemInfo,
-                    showWidth: systemInfo.screenWidth,
-                    showHeight: systemInfo.screenHeight
+                    showWidth: screenWidth,
+                    showHeight: screenHeight
                 })
             }
         } else {
@@ -72,8 +74,8 @@ Page({
                         userInfo: res.userInfo,
                         hasUserInfo: true,
                         systemInfo: systemInfo,
-                        showWidth: systemInfo.screenWidth,
-                        showHeight: systemInfo.screenHeight
+                        showWidth: screenWidth,
+                        showHeight: screenHeight
                     })
                 }
             })
@@ -138,17 +140,17 @@ Page({
         var that = this
         var showWidth = that.data.showWidth
         var showHeight = that.data.showHeight
-        this.setData({
-            canvasHidden: false
-        });
-        //var context = wx.createContext();
-        var context = wx.createCanvasContext(that.data.mycanvas);
-        context.setFillStyle('white')
+        var fontSize = that.data.fontSize
+        var fontColor = "black"
+        var fillColor = "white"
+
+        var context = wx.createCanvasContext(that.data.mycanvas)
+        context.setFillStyle(fillColor)
         context.fillRect(0, 0, showWidth, showWidth)
-        context.setFontSize(35)
-        context.setFillStyle('black')
-        context.setTextAlign("center");// 'left','center','right'
-        context.fillText(that.data.name, showWidth / 2, showWidth / 2);//必须为（0,0）原点
+        context.setFontSize(fontSize)
+        context.setFillStyle(fontColor)
+        context.setTextAlign("center");
+        context.fillText(that.data.name, showWidth / 2, (showWidth + fontSize) / 2);
         context.restore();
         context.draw()
 
@@ -185,10 +187,12 @@ Page({
     },
     formSubmit: function (e) {
         var that = this;
-        var name = e.detail.value.name;
+        var name = e.detail.value.name
+        var fontSize = e.detail.value.fontSize
         name = name == "" ? this.data.defaultName : name;
         this.setData({
             name: name,
+            fontSize: fontSize,
             maskHidden: false,
             canvasHidden: false
         });
