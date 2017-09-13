@@ -2,14 +2,14 @@
 var app = getApp()
 Page({
     data: {
-        title:"生成黑色名言图片",
+        title:"生成名言图片",
         desc:"by tiankonguse",
         btnText:"生成名言",
         lableName:"你的名言",
         imagePath: "../../image/black.jpg",
         defaultImagePath: "../../image/black.jpg",
-        name: "",
-        defaultName: "这里输入文字",
+        name: "图不重要看文字",
+        defaultName: "在此输入文字",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -19,7 +19,41 @@ Page({
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
-        fontSize: 35
+        fontSize: 35,
+        wordFrontColorIndex: 0,
+        wordBackColorIndex: 1,
+        wordColorMap: [
+            { "color": "Black" },
+            { "color": "White" },
+            { "color": "Gray" },
+            { "color": "Green" },
+            { "color": "Red" },
+            { "color": "Yellow" },
+            { "color": "Silver" },
+            { "color": "Orange" },
+            { "color": "Blue" },
+            { "color": "Brown" },
+            { "color": "Crimson" },
+            { "color": "DarkBlue" },
+            { "color": "Pink" }
+        ],
+        toFrontColorView: 'White',
+        toBackColorView: 'Black'
+    }, 
+    backColorClick: function (e) {
+        var that = this
+        that.data.toBackColorView = e.currentTarget.dataset.color
+        that.show()
+    },
+    frontColorClick: function (e) {
+        var that = this
+        that.data.toFrontColorView = e.currentTarget.dataset.color
+        that.show()
+    },
+    frontSizeClick: function (e) {
+        var that = this
+        that.data.fontSize = e.detail.value
+        that.show()
     },
     onShareAppMessage: function (options) {
         var that = this
@@ -41,7 +75,32 @@ Page({
             }
         }
     },
-    onLoad: function (options) {
+    show: function () {
+        var that = this;
+
+        that.data.maskHidden = false
+        that.data.canvasHidden = false
+        that.setData(that.data);
+        wx.showToast({
+            title: '生成中...',
+            icon: 'loading',
+            duration: 2000
+        });
+        setTimeout(function () {
+            wx.hideToast()
+            that.createNewImg(function () {
+                that.setData({
+                    maskHidden: true,
+                    canvasHidden: true
+                });
+
+                wx.showToast({
+                    title: '点击图片后长按可保存',
+                    icon: 'success',
+                    duration: 2000
+                });
+            });
+        }, 2000)
     },
     onReady: function () {
         var that = this
@@ -82,17 +141,6 @@ Page({
                 }
             })
         }
-    },
-    onShow: function () {
-    },
-    onHide: function () {
-    },
-    onUnload: function () {
-    },
-    hideCanva: function () {
-        this.setData({
-            maskHidden: true
-        });
     },
     saveFile: function (tempFilePath, cb) {
         var that = this
@@ -144,8 +192,8 @@ Page({
         var showHeight = showWidth
         var context = wx.createCanvasContext(that.data.mycanvas)
         var fontSize = that.data.fontSize
-        var fontColor = "white"
-        var fillColor = "black"
+        var fontColor = that.data.toFrontColorView
+        var fillColor = that.data.toBackColorView
 
         context.setFillStyle(fillColor)
         context.fillRect(0, 0, showWidth, showHeight)
@@ -185,65 +233,8 @@ Page({
     },
     formSubmit: function (e) {
         var that = this;
-        var name = e.detail.value.name
-        var fontSize = e.detail.value.fontSize
-        name = name == "" ? this.data.defaultName : name;
-        this.setData({
-            name: name,
-            fontSize: fontSize,
-            maskHidden: false,
-            canvasHidden: false
-        });
-        wx.showToast({
-            title: '生成中...',
-            icon: 'loading',
-            duration: 2000
-        });
-        setTimeout(function () {
-            wx.hideToast()
-            that.createNewImg(function () {
-                that.setData({
-                    maskHidden: true,
-                    canvasHidden: true
-                });
-
-                wx.showToast({
-                    title: '点击图片后长按可保存',
-                    icon: 'success',
-                    duration: 2000
-                });
-            });
-        }, 2000)
-
-    },
-    getUserInfo: function () {
-        var that = this
-
-        if (app.globalData.hasLogin === false) {
-            wx.login({
-                success: _getUserInfo
-            })
-        } else {
-            _getUserInfo()
-        }
-
-        function _getUserInfo() {
-            wx.getUserInfo({
-                success: function (res) {
-                    that.setData({
-                        hasUserInfo: true,
-                        userInfo: res.userInfo
-                    })
-                    that.update()
-                }
-            })
-        }
-    },
-    clear: function () {
-        this.setData({
-            hasUserInfo: false,
-            userInfo: {}
-        })
+        that.data.name = e.detail.value.name || that.data.defaultName
+        that.data.fontSize = e.detail.value.fontSize
+        that.show()
     }
-
 })
