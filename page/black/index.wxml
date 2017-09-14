@@ -13,9 +13,9 @@
             <block>
                 <view class="kind-list-item">
                     <form bindsubmit="formSubmit">
-                        <view class="input-row colorlist">
+                        <view class="input-row colorlist no-border-bottom">
                             <label class="lableName">背景</label>
-                            <scroll-view scroll-x="true"  class="scroll-view_H inputName">
+                            <scroll-view scroll-x="true" class="scroll-view_H inputName">
                                 <block wx:for-items="{{wordColorMap}}" wx:key="item.color">
                                     <block wx:if="{{item.color == toBackColorView}}">
                                         <view class="scroll-color-circle selected-color-circle" style="background-color: {{item.color}}" bindtap="backColorClick" data-color="{{item.color}}"></view>
@@ -26,28 +26,28 @@
                                 </block>
                             </scroll-view>
                         </view>
-                        <view class="input-row colorlist">
+                        <view class="input-row colorlist no-border-bottom">
                             <label class="lableName">字体</label>
                             <scroll-view scroll-x="true" class="scroll-view_H inputName">
                                 <block wx:for-items="{{wordColorMap}}" wx:key="item.color">
                                     <block wx:if="{{item.color == toFrontColorView}}">
-<view class="scroll-color-circle selected-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
-</block>
-<block wx:if="{{item.color != toFrontColorView}}">
-<view class="scroll-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
-</block>
+                                        <view class="scroll-color-circle selected-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
+                                    </block>
+                                    <block wx:if="{{item.color != toFrontColorView}}">
+                                        <view class="scroll-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
+                                    </block>
                                 </block>
                             </scroll-view>
                         </view>
-                        <view class="input-row">
-                            <label class="lableName">名言</label>
-                            <input name='name' type="text" maxlength="20" placeholder="{{defaultName}}" class="inputName" placeholder-style="color:#e0e0e0" />
+                        <view class="input-row no-border-bottom">
+                            <label class="lableName">文字</label>
+                            <input name='name' type="text"  placeholder="{{defaultName}}" class="inputName input-word"  placeholder-class="input-word-placeholder"/>
                         </view>
-                        <view class="input-row">
-                            <label class="lableName">大小</label>
-                            <slider name='fontSize' value="35" min="35" max="155" step="30" show-value class="inputName" bindchange="frontSizeClick" />
+                        <view class="input-row no-border-bottom">
+                            <label class="lableName">字号</label>
+                            <slider name='fontSize' value="{{sliderFontObj.value}}" min="{{sliderFontObj.min}}" max="{{sliderFontObj.max}}" step="{{sliderFontObj.step}}" show-value class="inputName slider-fontsize" bindchange="frontSizeClick" />
                         </view>
-                        <button formType="submit" class="bornbtn" type="primary">{{btnText}}</button>
+                        <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
                     </form>
                 </view>
             </block>

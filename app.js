@@ -14,14 +14,13 @@ App({
         userInfo: null,
         AppID: "wxe9d370b20c760b2c",
         AppSecret: "4ffcf61f4e159300cb4edead77480b1a",
-        shareTitle: "快速生成名言图片",
+        shareTitle: "图文速成工具",
         systemInfo: {}
     },
     getUserInfo: function (res){
         var app = this;
         wx.getUserInfo({
             success: function (res) {
-                console.log("getUserInfo success", res);
 
                 app.globalData.hasLogin = true
                 app.globalData.userInfo = res.userInfo
@@ -37,7 +36,6 @@ App({
                 console.log("getUserInfo fail", res);
             },
             complete: res => {
-                console.log("getUserInfo complete", res);
             },
         })
     },

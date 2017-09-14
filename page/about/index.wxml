@@ -36,13 +36,13 @@
                     <view id="" class="kind-list-item-hd about-hd">
                         <view class="kind-list-text">
                             <view class="about-save">
-                                <button type="primary" bindtap="saveImg">保存小程序码</button>
+                                <button type="primary" bindtap="saveImg" class="button-about">保存小程序码</button>
                             </view>
                             <view class="about-contact">
-                                <button type="primary" open-type="contact">反馈问题</button>
+                                <button type="primary" open-type="contact" class="button-about">反馈问题</button>
                             </view>
                             <view class="about-share">
-                                <button type="primary" open-type="share">分享此工具</button>
+                                <button type="primary" open-type="share" class="button-about">分享此工具</button>
                             </view>
                         </view>
                     </view>

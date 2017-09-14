@@ -5,7 +5,6 @@
         "page/logs/logs"
     ],
     "backPages":[
-        "page/nine/index",
         "page/index/index",
         "page/main/main",
         "page/config/config",
@@ -76,7 +75,7 @@
     ],
     "window": {
         "navigationBarBackgroundColor": "#F8F8F8",
-        "navigationBarTitleText": "名言图片",
+        "navigationBarTitleText": "图文速成工具",
         "navigationBarTextStyle": "black",
         "backgroundTextStyle": "light"
     },

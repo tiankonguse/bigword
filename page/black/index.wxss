@@ -9,7 +9,6 @@
     padding: 0rpx;
     background-color: #fff;
     border-bottom: 0rpx solid #e5e5e5;
-    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -33,6 +32,7 @@
 
 .input-row input {
     border-bottom: 1px solid #d2d2d2;
+    color:#3b212f;
 }
 .scroll-view_H{
   white-space: nowrap;
@@ -50,10 +50,7 @@
     border: 3rpx solid #ca4f07;
 }
 
-.bornbtn {
-    width: 686rpx;
-    margin: auto;
-}
+
 
 .mask {
     position: fixed;
@@ -89,9 +86,33 @@
 
 .lableName{
     width:15%;
-    color: #ccc;
+    color: #1E0B0F;
 }
 
 .inputName{
-    width:83%;
+    width:84%;
+}
+
+.no-border-bottom{
+    border-bottom:0px solid red;
+}
+
+.slider-fontsize{
+    margin: 0rpx;
+}
+
+.input-word{
+    text-align: center;
+}
+
+.input-word-placeholder{
+    color:#e0e0e0;
+    text-align: center;
+}
+
+button.bornbtn {
+    width: 386rpx;
+    margin: auto;
+    margin-bottom:20rpx;
+    background-color:#FFFFFF;
 }
