@@ -111,12 +111,6 @@
                 "iconPath": "image/account.png",
                 "selectedIconPath": "image/account-filling.png",
                 "text": "组件"
-            },
-            {
-                "pagePath": "page/white/index",
-                "iconPath": "image/icon_black.png",
-                "selectedIconPath": "image/icon_black_HL.png",
-                "text": "字"
             }
         ]
     },
