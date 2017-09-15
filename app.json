@@ -2,6 +2,7 @@
     "pages": [
         "page/black/index",
         "page/about/index",
+        "page/more/index",
         "page/logs/logs"
     ],
     "backPages":[
@@ -87,9 +88,15 @@
         "list": [
             {
                 "pagePath": "page/black/index",
-                "iconPath": "image/icon_component.png",
-                "selectedIconPath": "image/icon_component_HL.png",
-                "text": "白纸黑字"
+                "iconPath": "image/icon_one.png",
+                "selectedIconPath": "image/icon_one_select.png",
+                "text": "速转图片"
+            },
+            {
+                "pagePath": "page/more/index",
+                "iconPath": "image/icon_more.png",
+                "selectedIconPath": "image/icon_more_select.png",
+                "text": "速转图片"
             },
             {
                 "pagePath": "page/about/index",

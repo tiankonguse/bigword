@@ -1,0 +1,71 @@
+<!--index.wxml-->
+<view class="index">
+    <view class="index-bd">
+        <view class="kind-list">
+            <block>
+                <view class="kind-list-item">
+                    <view class="img-box">
+                        <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showWidth-30}}px; height:{{showWidth-30}}px;"></image>
+                    </view>
+                </view>
+            </block>
+
+            <block>
+                <view class="kind-list-item">
+                    <form bindsubmit="formSubmit">
+                        <view class="input-row colorlist no-border-bottom">
+                            <label class="lableName">背景</label>
+                            <scroll-view scroll-x="true" class="scroll-view_H inputName">
+                                <block wx:for-items="{{wordColorMap}}" wx:key="item.color">
+                                    <block wx:if="{{item.color == toBackColorView}}">
+                                        <view class="scroll-color-circle selected-color-circle" style="background-color: {{item.color}}" bindtap="backColorClick" data-color="{{item.color}}"></view>
+                                    </block>
+                                    <block wx:if="{{item.color != toBackColorView}}">
+                                        <view class="scroll-color-circle" style="background-color: {{item.color}}" bindtap="backColorClick" data-color="{{item.color}}"></view>
+                                    </block>
+                                </block>
+                            </scroll-view>
+                        </view>
+                        <view class="input-row colorlist no-border-bottom">
+                            <label class="lableName">字体</label>
+                            <scroll-view scroll-x="true" class="scroll-view_H inputName">
+                                <block wx:for-items="{{wordColorMap}}" wx:key="item.color">
+                                    <block wx:if="{{item.color == toFrontColorView}}">
+                                        <view class="scroll-color-circle selected-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
+                                    </block>
+                                    <block wx:if="{{item.color != toFrontColorView}}">
+                                        <view class="scroll-color-circle" style="background-color: {{item.color}}" bindtap="frontColorClick" data-color="{{item.color}}"></view>
+                                    </block>
+                                </block>
+                            </scroll-view>
+                        </view>
+                        <view class="input-row no-border-bottom">
+                            <label class="lableName">文字</label>
+                            <input name='name' type="text"  placeholder="{{defaultName}}" class="inputName input-word"  placeholder-class="input-word-placeholder" bindblur="textInputFinish" />
+                        </view>
+                        <view class="input-row no-border-bottom">
+                            <label class="lableName">字号</label>
+                            <slider name='fontSize' value="{{sliderFontObj.value}}" min="{{sliderFontObj.min}}" max="{{sliderFontObj.max}}" step="{{sliderFontObj.step}}" show-value class="inputName slider-fontsize" bindchange="frontSizeClick" />
+                        </view>
+                        
+                        <view class="input-row no-border-bottom">
+                            <button bindtap="addLineClick" class="addLinebtn" type="default" plain="">添加一行</button>
+                            <button bindtap="deleteLineClick" class="deleteLinebtn" type="default" plain="">删除一行</button>
+                            <button bindtap="resetLineClick" class="resetLinebtn" type="default" plain="">重置所有</button>
+                        </view>
+                        
+                        <view class="input-row no-border-bottom">
+                            <button formType="submit" class="bornbtn" type="primary" plain="">{{btnText}}</button>
+                        </view>
+                    </form>
+                </view>
+            </block>
+
+
+        </view>
+    </view>
+    <view hidden="{{maskHidden}}" class="mask"></view>
+    <view class="canvas-box">
+        <canvas hidden="{{canvasHidden}}" style="width: 750rpx;height: 750rpx;" canvas-id="mycanvas" />
+    </view>
+</view>
