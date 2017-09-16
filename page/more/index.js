@@ -1,5 +1,6 @@
 // pages/main/index.js
 var app = getApp()
+const imgLib = require('../../lib/img');
 Page({
     data: {
         title: "图文速成工具",
@@ -9,7 +10,7 @@ Page({
         imagePath: "/image/black.jpg",
         defaultImagePath: "/image/black.jpg",
         name: "朋友圈专用图",
-        defaultName: "在此输入",
+        defaultName: "在此输入下一行文本，支持表情哦",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -20,6 +21,7 @@ Page({
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
         fontSize: 35,
+        wordPad: 5,
         wordFrontColorIndex: 0,
         wordBackColorIndex: 1,
         wordColorMap: [
@@ -242,6 +244,7 @@ Page({
         var bigwordCodeSize = that.data.bigwordCodeSize
         var bigwordCode = that.findBigWordCode(fillColor)
         var nameList = that.data.nameList
+        var wordPad = that.data.wordPad
         if (fillColor == bigwordTextColor){
             bigwordTextColor = fontColor;
         }
@@ -256,7 +259,6 @@ Page({
         context.setTextAlign("center")
 
         var wordNum = nameList.length
-        var wordPad = 5
         var tmpSize = fontSize 
         var firstHeight = (showWidth - (wordNum * tmpSize + wordPad * (wordNum - 1) ))/2 + tmpSize / 2
         for (var i = 0; i < wordNum; i++){
@@ -315,6 +317,10 @@ Page({
         var that = this
         that.data.fontSize = e.detail.value
         that.data.sliderFontObj.value = that.data.fontSize
+    },
+    frontIntervalClick: function (e) {
+        var that = this
+        that.data.wordPad = e.detail.value
     },
     textInputFinish: function (e) {
         var that = this

@@ -40,23 +40,23 @@
                             </scroll-view>
                         </view>
                         <view class="input-row no-border-bottom">
+                            <label class="lableName">字号</label>
+                            <slider name='fontSize' value="{{sliderFontObj.value}}" min="{{sliderFontObj.min}}" max="{{sliderFontObj.max}}" step="{{sliderFontObj.step}}" show-value class="inputName slider-fontsize" bindchange="frontSizeClick" />
+                        </view>
+                        <view class="input-row no-border-bottom">
+                            <label class="lableName">间距</label>
+                            <slider name='fontSize' value="{{wordPad}}" min="3" max="31" step="2" show-value class="inputName slider-fontsize" bindchange="frontIntervalClick" />
+                        </view>
+                        <view class="input-row no-border-bottom">
                             <label class="lableName">文字</label>
                             <input name='name' type="text"  placeholder="{{defaultName}}" class="inputName input-word"  placeholder-class="input-word-placeholder" bindblur="textInputFinish" />
                         </view>
                         <view class="input-row no-border-bottom">
-                            <label class="lableName">字号</label>
-                            <slider name='fontSize' value="{{sliderFontObj.value}}" min="{{sliderFontObj.min}}" max="{{sliderFontObj.max}}" step="{{sliderFontObj.step}}" show-value class="inputName slider-fontsize" bindchange="frontSizeClick" />
-                        </view>
-                        
-                        <view class="input-row no-border-bottom">
                             <button bindtap="addLineClick" class="addLinebtn" type="default" plain="">添加一行</button>
                             <button bindtap="deleteLineClick" class="deleteLinebtn" type="default" plain="">删除一行</button>
-                            <button bindtap="resetLineClick" class="resetLinebtn" type="default" plain="">重置所有</button>
                         </view>
                         
-                        <view class="input-row no-border-bottom">
-                            <button formType="submit" class="bornbtn" type="primary" plain="">{{btnText}}</button>
-                        </view>
+                        <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
                     </form>
                 </view>
             </block>

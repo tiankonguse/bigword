@@ -9,7 +9,7 @@ Page({
         imagePath: "/image/black.jpg",
         defaultImagePath: "/image/black.jpg",
         name: "朋友圈专用图",
-        defaultName: "在此输入文本，支持表情哦",
+        defaultName: "在此输入多行文本，支持表情哦",
         maskHidden: true,
         canvasHidden: true,
         showHeight: 0,
@@ -20,6 +20,7 @@ Page({
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
         fontSize: 35,
+        wordPad: 5,
         wordFrontColorIndex: 0,
         wordBackColorIndex: 1,
         wordColorMap: [
@@ -84,25 +85,8 @@ Page({
         bigwordCodeSize: 80,
         bigwordText: "来自小程序 图文速成工具",
         bigwordTextSize: 12,
-        bigwordTextColor: "Gray"
-    },
-    backColorClick: function (e) {
-        var that = this
-        that.data.toBackColorView = e.currentTarget.dataset.color
-        that.setData(that.data);
-        //that.show()
-    },
-    frontColorClick: function (e) {
-        var that = this
-        that.data.toFrontColorView = e.currentTarget.dataset.color
-        that.setData(that.data);
-        //that.show()
-    },
-    frontSizeClick: function (e) {
-        var that = this
-        that.data.fontSize = e.detail.value
-        that.data.sliderFontObj.value = that.data.fontSize
-        //that.show()
+        bigwordTextColor: "Gray",
+        nameList: []
     },
     onShareAppMessage: function (options) {
         var that = this
@@ -124,7 +108,7 @@ Page({
             }
         }
     },
-    show: function () {
+    show: function (flag) {
         var that = this;
 
         that.data.maskHidden = false
@@ -137,16 +121,17 @@ Page({
         });
         setTimeout(function () {
             wx.hideToast()
-            that.createNewImg(function () {
+            that.createNewImg(flag, function () {
                 that.data.maskHidden = true
                 that.data.canvasHidden = true
                 that.setData(that.data);
-
-                wx.showToast({
-                    title: '点击图片后长按可保存',
-                    icon: 'success',
-                    duration: 2000
-                });
+                if (flag){
+                    wx.showToast({
+                        title: '点击图片后长按可保存',
+                        icon: 'success',
+                        duration: 2000
+                    });
+                }
             });
         }, 2000)
     },
@@ -244,7 +229,7 @@ Page({
         }
         return that.data.bigwordCode
     },
-    createNewImg: function (cb) {
+    createNewImg: function (flag, cb) {
         var that = this
         var showWidth = that.data.showWidth
         var showHeight = that.data.showHeight
@@ -255,10 +240,10 @@ Page({
         var bigwordText = that.data.bigwordText
         var bigwordTextSize = that.data.bigwordTextSize
         var bigwordTextColor = that.data.bigwordTextColor
-        var name = that.data.name
         var bigwordCodeSize = that.data.bigwordCodeSize
         var bigwordCode = that.findBigWordCode(fillColor)
-
+        var nameList = that.data.nameList
+        var wordPad = that.data.wordPad
         if (fillColor == bigwordTextColor){
             bigwordTextColor = fontColor;
         }
@@ -271,7 +256,15 @@ Page({
         context.setFontSize(fontSize)
         context.setFillStyle(fontColor)
         context.setTextAlign("center")
-        context.fillText(name, showWidth / 2, (showHeight + fontSize/2) / 2)
+
+        var wordNum = nameList.length
+        var tmpSize = fontSize 
+        var firstHeight = (showWidth - (wordNum * tmpSize + wordPad * (wordNum - 1) ))/2 + tmpSize / 2
+        for (var i = 0; i < wordNum; i++){
+            var name = nameList[i]
+            context.fillText(name, showWidth / 2, firstHeight + tmpSize/4)
+            firstHeight += tmpSize + wordPad
+        }
 
         context.setFillStyle(bigwordTextColor)
         context.setFontSize(bigwordTextSize)
@@ -290,7 +283,7 @@ Page({
         var img = this.data.imagePath
         if (img == this.data.defaultImagePath) {
             wx.showToast({
-                title: '请先输入文字',
+                title: '请先生成图片',
                 icon: 'loading',
                 duration: 1000
             });
@@ -309,18 +302,63 @@ Page({
             }
         })
     },
+    backColorClick: function (e) {
+        var that = this
+        that.data.toBackColorView = e.currentTarget.dataset.color
+        that.setData(that.data);
+    },
+    frontColorClick: function (e) {
+        var that = this
+        that.data.toFrontColorView = e.currentTarget.dataset.color
+        that.setData(that.data);
+    },
+    frontSizeClick: function (e) {
+        var that = this
+        that.data.fontSize = e.detail.value
+        that.data.sliderFontObj.value = that.data.fontSize
+    },
+    frontIntervalClick: function(e){
+        var that = this
+        that.data.wordPad = e.detail.value
+    },
+    textInputFinish: function (e) {
+        var that = this
+        that.data.name = e.detail.value
+    },
+    addLineClick: function (e) {
+        var that = this
+        that.data.nameList.push(that.data.name)
+        that.show(false)
+    },
+    deleteLineClick: function () {
+        var that = this
+        if (that.data.nameList.length > 0) {
+            that.data.nameList.pop()
+            that.show(false)
+        }else{
+            wx.showToast({
+                title: '请先添加文字',
+                icon: 'loading',
+                duration: 1000
+            });
+        }
+    },
+    resetLineClick: function () {
+        var that = this
+        that.data.nameList = []
+        that.show(false)
+    },
     formSubmit: function (e) {
         var that = this;
-        if (e.detail.value.name == "") {
+        if (that.data.name == "") {
             wx.showToast({
-                title: '请先输入文字',
+                title: '请先添加文字',
                 icon: 'loading',
                 duration: 1000
             });
             return
         }
-        that.data.name = e.detail.value.name
-        that.data.fontSize = e.detail.value.fontSize
-        that.show()
+        that.data.nameList = that.data.name.split("\n")
+        that.show(true)
     }
 })

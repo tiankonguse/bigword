@@ -44,10 +44,16 @@
                             <slider name='fontSize' value="{{sliderFontObj.value}}" min="{{sliderFontObj.min}}" max="{{sliderFontObj.max}}" step="{{sliderFontObj.step}}" show-value class="inputName slider-fontsize" bindchange="frontSizeClick" />
                         </view>
                         <view class="input-row no-border-bottom">
-                            <label class="lableName">文字</label>
-                            <input name='name' type="text"  placeholder="{{defaultName}}" class="inputName input-word"  placeholder-class="input-word-placeholder"/>
+                            <label class="lableName">间距</label>
+                            <slider name='fontSize' value="{{wordPad}}" min="3" max="31" step="2" show-value class="inputName slider-fontsize" bindchange="frontIntervalClick" />
                         </view>
-                        <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
+                        <view class="input-row input-row-autoheight no-border-bottom">
+                            <label class="lableName">文字</label>
+                            <view class="textarea-wrp">
+                                <textarea name='name' placeholder="{{defaultName}}" class="inputName input-word" placeholder-class="input-word-placeholder" bindblur="textInputFinish" auto-height />
+                            </view>
+                        </view>
+                       <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
                     </form>
                 </view>
             </block>

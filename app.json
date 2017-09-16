@@ -3,6 +3,7 @@
         "page/black/index",
         "page/about/index",
         "page/more/index",
+        "page/more_simple/index",
         "page/logs/logs"
     ],
     "backPages":[
@@ -90,13 +91,19 @@
                 "pagePath": "page/black/index",
                 "iconPath": "image/icon_one.png",
                 "selectedIconPath": "image/icon_one_select.png",
-                "text": "速转图片"
+                "text": "常用版"
+            },
+            {
+                "pagePath": "page/more_simple/index",
+                "iconPath": "image/icon_more.png",
+                "selectedIconPath": "image/icon_more_select.png",
+                "text": "初级版"
             },
             {
                 "pagePath": "page/more/index",
                 "iconPath": "image/icon_more.png",
                 "selectedIconPath": "image/icon_more_select.png",
-                "text": "速转图片"
+                "text": "高级版"
             },
             {
                 "pagePath": "page/about/index",
@@ -106,6 +113,12 @@
             }
         ],
         "backList" : [
+            {
+                "pagePath": "page/more/index",
+                "iconPath": "image/icon_more.png",
+                "selectedIconPath": "image/icon_more_select.png",
+                "text": "初级版"
+            },
             {
                 "pagePath": "page/API/index",
                 "iconPath": "image/account.png",
