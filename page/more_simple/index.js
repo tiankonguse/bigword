@@ -6,8 +6,8 @@ Page({
         desc: "by tiankonguse",
         btnText: "一键速成",
         lableName: "你的图文",
-        imagePath: "/image/black.jpg",
-        defaultImagePath: "/image/black.jpg",
+        imagePath: "/image/more.jpg",
+        defaultImagePath: "/image/more.jpg",
         name: "朋友圈专用图",
         defaultName: "在此输入多行文本，支持表情哦",
         maskHidden: true,
@@ -73,8 +73,8 @@ Page({
                 "code_color": "white"
             }
         ],
-        toFrontColorView: 'White',
-        toBackColorView: 'Black',
+        toFrontColorView: 'Black',
+        toBackColorView: 'White',
         sliderFontObj: {
             min: 10,
             max: 250,

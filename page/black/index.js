@@ -72,8 +72,8 @@ Page({
                 "code_color": "white"
             }
         ],
-        toFrontColorView: 'White',
-        toBackColorView: 'Black',
+        toFrontColorView: 'Black',
+        toBackColorView: 'White',
         sliderFontObj: {
             min: 10,
             max: 250,

@@ -100,12 +100,6 @@
                 "text": "初级版"
             },
             {
-                "pagePath": "page/more/index",
-                "iconPath": "image/icon_more.png",
-                "selectedIconPath": "image/icon_more_select.png",
-                "text": "高级版"
-            },
-            {
                 "pagePath": "page/about/index",
                 "iconPath": "image/account.png",
                 "selectedIconPath": "image/account-filling.png",
@@ -118,6 +112,12 @@
                 "iconPath": "image/icon_more.png",
                 "selectedIconPath": "image/icon_more_select.png",
                 "text": "初级版"
+            },
+            {
+                "pagePath": "page/more/index",
+                "iconPath": "image/icon_more.png",
+                "selectedIconPath": "image/icon_more_select.png",
+                "text": "高级版"
             },
             {
                 "pagePath": "page/API/index",
