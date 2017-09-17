@@ -4,8 +4,8 @@
         <view class="kind-list">
             <block>
                 <view class="kind-list-item">
-                    <view class="img-box">
-                        <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showWidth-30}}px; height:{{showWidth-30}}px;"></image>
+                    <view class="img-box" style="width:{{showWidth-30}}px; height:{{showHeight-30}}px;">
+                        <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showImgWidth-30}}px; height:{{showImgHeight-30}}px;"></image>
                     </view>
                 </view>
             </block>
@@ -62,7 +62,7 @@
         </view>
     </view>
     <view hidden="{{maskHidden}}" class="mask"></view>
-    <view class="canvas-box">
-        <canvas hidden="{{canvasHidden}}" style="width: 750rpx;height: 750rpx;" canvas-id="mycanvas" />
+    <view class="canvas-box {{canvasHidden?'hide':'block'}}">
+        <canvas style="width:{{showImgWidth}}px; height:{{showReadyImgHeight}}px;" canvas-id="mycanvas" />
     </view>
 </view>

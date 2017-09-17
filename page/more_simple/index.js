@@ -14,6 +14,8 @@ Page({
         canvasHidden: true,
         showHeight: 0,
         showWidth: 0,
+        showImgWidth: 0,
+        showImgHeight: 0,
         mycanvas: "mycanvas",
         systemInfo: {},
         userInfo: {},
@@ -86,7 +88,9 @@ Page({
         bigwordText: "来自小程序 图文速成工具",
         bigwordTextSize: 12,
         bigwordTextColor: "Gray",
-        nameList: []
+        nameList: [],
+        maxTextWidth:0,
+        showReadyImgHeight:0
     },
     onShareAppMessage: function (options) {
         var that = this
@@ -108,11 +112,103 @@ Page({
             }
         }
     },
-    show: function (flag) {
-        var that = this;
+    isAlpha: function (char) {
+        if (char.charCodeAt() < 127) {
+            return 1
+        } else {
+            return 0
+        }
+    },
+    getNameHeight: function (name) {
+        var that = this
+        var showWidth = that.data.showImgWidth
+        var fontSize = that.data.fontSize
+        var wordHeightPad = that.data.wordPad
+        var wordWidthPad = 0
+        var nameObj = {
+            "height": 0,
+            "nameList": []
+        }
 
+        if (name.length == 0) {
+            nameObj.nameList.push(name);
+            nameObj.height = fontSize;
+            return nameObj;
+        }
+
+        var tmpName = "";
+        var defaultTmpWidth = 50;
+        var tmpWidth = defaultTmpWidth;
+        var oneWordWidth = 0;
+        that.data.maxTextWidth = 0
+        for (var i = 0; i < name.length; i++) {
+            var char = name[i];
+            if (that.isAlpha(char)) {
+                oneWordWidth = wordWidthPad + fontSize * 19 / 32;
+            } else {
+                oneWordWidth = wordWidthPad + fontSize;
+            }
+            if (tmpWidth + oneWordWidth >= showWidth) {
+                if (that.data.maxTextWidth == 0){
+                    that.data.maxTextWidth = tmpWidth - defaultTmpWidth - wordWidthPad
+                }
+                nameObj.nameList.push(tmpName)
+                tmpName = ""
+                tmpWidth = defaultTmpWidth
+            }
+            tmpWidth += oneWordWidth;
+            tmpName += char;
+
+        }
+        if (tmpName.length > 0) {
+            nameObj.nameList.push(tmpName)
+        }
+
+        nameObj.height = nameObj.nameList.length * fontSize + (nameObj.nameList.length - 1) * wordHeightPad;
+
+        return nameObj;
+    },
+    arrayConcat: function (first, second) {
+        var list = [];
+
+        for (var i = 0; i < first.length; i++) {
+            list.push(first[i]);
+        }
+        for (var i = 0; i < second.length; i++) {
+            list.push(second[i]);
+        }
+        return list;
+    },
+    getAllHeight: function () {
+        var that = this
+        var nameListObj = {
+            "realHeight": 0,
+            "nameListSize": 0,
+            "nameList": []
+        }
+        var realHeight = 100 + that.data.wordPad * (that.data.nameList.length - 1);
+        for (var i = 0; i < that.data.nameList.length; i++) {
+            var nameObj = that.getNameHeight(that.data.nameList[i])
+            realHeight += nameObj.height
+            nameListObj.nameListSize += nameObj.nameList.length;
+            nameListObj.nameList.push(nameObj);
+        }
+        nameListObj.realHeight = realHeight;
+        return nameListObj;
+    },
+    show: function (flag) {
+        var that = this
+        var nameListObj = that.getAllHeight()
+        if (that.data.showHeight < nameListObj.realHeight) {
+            that.data.showReadyImgHeight = nameListObj.realHeight
+        } else {
+            that.data.showReadyImgHeight = that.data.showHeight
+        }
         that.data.maskHidden = false
         that.data.canvasHidden = false
+
+
+
         that.setData(that.data);
         wx.showToast({
             title: '生成中...',
@@ -121,11 +217,16 @@ Page({
         });
         setTimeout(function () {
             wx.hideToast()
-            that.createNewImg(flag, function () {
+            that.createNewImg(nameListObj, flag, function (state) {
                 that.data.maskHidden = true
                 that.data.canvasHidden = true
+
+                if (!state){
+                    that.data.showImgHeight = that.data.showReadyImgHeight
+                }
                 that.setData(that.data);
-                if (flag){
+
+                if (flag && !state) {
                     wx.showToast({
                         title: '点击图片后长按可保存',
                         icon: 'success',
@@ -141,98 +242,114 @@ Page({
         var screenWidth = systemInfo.screenWidth
         var screenHeight = screenWidth
 
-
+        var data = {
+            userInfo: app.globalData.userInfo,
+            hasUserInfo: true,
+            systemInfo: systemInfo,
+            showWidth: screenWidth,
+            showHeight: screenHeight,
+            showImgWidth: screenWidth,
+            showImgHeight: screenHeight
+        }
 
         if (app.globalData.userInfo) {
-            that.setData({
-                userInfo: app.globalData.userInfo,
-                hasUserInfo: true,
-                systemInfo: systemInfo,
-                showWidth: screenWidth,
-                showHeight: screenHeight
-            })
+            that.setData(data)
         } else if (this.data.canIUse) {
             app.userInfoReadyCallback = res => {
-                that.setData({
-                    userInfo: res.userInfo,
-                    hasUserInfo: true,
-                    systemInfo: systemInfo,
-                    showWidth: screenWidth,
-                    showHeight: screenHeight
-                })
+                data.userInfo = res.userInfo
+                that.setData(data)
             }
         } else {
             // 在没有 open-type=getUserInfo 版本的兼容处理
             wx.getUserInfo({
                 success: res => {
                     app.globalData.userInfo = res.userInfo
-                    that.setData({
-                        userInfo: res.userInfo,
-                        hasUserInfo: true,
-                        systemInfo: systemInfo,
-                        showWidth: screenWidth,
-                        showHeight: screenHeight
-                    })
+                    data.userInfo = res.userInfo
+                    that.setData(data)
                 }
             })
         }
     },
+    removeSavedFile: function (cb){
+        wx.getSavedFileList({
+            success: function (res) {
+                if (res.fileList.length > 0) {
+                    wx.removeSavedFile({
+                        filePath: res.fileList[0].filePath,
+                        complete: function (res) {
+                            cb();
+                        }
+                    })
+                }
+            }
+        })
+    },
     saveFile: function (tempFilePath, cb) {
         var that = this
-        wx.saveFile({
-            tempFilePath: tempFilePath,
-            success: function success(res) {
-                that.setData({
-                    imagePath: res.savedFilePath,
-                    canvasHidden: true,
-                });
-                if (cb) {
-                    cb()
+        that.removeSavedFile(function(){
+            wx.saveFile({
+                tempFilePath: tempFilePath,
+                success: function success(res) {
+                    console.log("saveFile success", res);
+                    that.setData({
+                        imagePath: res.savedFilePath,
+                        canvasHidden: true,
+                    });
+                    if (cb) {
+                        cb()
+                    }
+                },
+                fail: function (res) {
+                    console.log("saveFile fail", res);
+                    wx.showModal({
+                        title: '提示',
+                        content: '图片太大，请减少文字或字号',
+                        success: function (res) {
+                            if (cb) {
+                                cb(1)
+                            }
+                        }
+                    })
+                },
+                complete: function (res) {
                 }
-            },
-            fail: function (res) {
-                console.log("fail", res);
-                if (cb) {
-                    cb()
-                }
-            },
-            complete: function (res) {
-                console.log("complete", res);
-            }
+            });
         });
+
     },
     canvasToFile: function (cb) {
         var that = this
         wx.canvasToTempFilePath({
             canvasId: that.data.mycanvas,
             success: function success(res) {
+                console.log("success", res);
                 that.saveFile(res.tempFilePath, cb)
             },
             fail: function (res) {
-                console.log("fail", res);
+                console.log("canvasToTempFilePath fail", res);
                 if (cb) {
-                    cb()
+                    cb(1)
                 }
             },
             complete: function (res) {
-                console.log("complete", res);
+                console.log("canvasToTempFilePath complete", res);
             }
         });
     },
     findBigWordCode: function (fillColor) {
         var that = this
         var map = that.data.wordColorMap
-        for(var i = 0; i< map.length;i++){
-            if (map[i].color == fillColor){
-                return "/image/logo_" + map[i].code_color+".png"
+        for (var i = 0; i < map.length; i++) {
+            if (map[i].color == fillColor) {
+                return "/image/logo_" + map[i].code_color + ".png"
             }
         }
         return that.data.bigwordCode
     },
-    createNewImg: function (flag, cb) {
+    createNewImg: function (nameListObj, flag, cb) {
         var that = this
-        var showWidth = that.data.showWidth
-        var showHeight = that.data.showHeight
+        var showWidth = that.data.showImgWidth
+        var showHeight = that.data.showReadyImgHeight
         var context = wx.createCanvasContext(that.data.mycanvas)
         var fontSize = that.data.fontSize
         var fontColor = that.data.toFrontColorView
@@ -242,39 +359,50 @@ Page({
         var bigwordTextColor = that.data.bigwordTextColor
         var bigwordCodeSize = that.data.bigwordCodeSize
         var bigwordCode = that.findBigWordCode(fillColor)
-        var nameList = that.data.nameList
         var wordPad = that.data.wordPad
-        if (fillColor == bigwordTextColor){
+        if (fillColor == bigwordTextColor) {
             bigwordTextColor = fontColor;
         }
 
-        console.log(bigwordCode)
-
+        var tmpSize = fontSize
         context.setFillStyle(fillColor)
         context.fillRect(0, 0, showWidth, showHeight)
+        context.draw()
 
         context.setFontSize(fontSize)
         context.setFillStyle(fontColor)
         context.setTextAlign("center")
-
-        var wordNum = nameList.length
-        var tmpSize = fontSize 
-        var firstHeight = (showWidth - (wordNum * tmpSize + wordPad * (wordNum - 1) ))/2 + tmpSize / 2
-        for (var i = 0; i < wordNum; i++){
-            var name = nameList[i]
-            context.fillText(name, showWidth / 2, firstHeight + tmpSize/4)
-            firstHeight += tmpSize + wordPad
+        context.setTextBaseline('bottom')
+        var firstHeight = (showHeight - (nameListObj.nameListSize * tmpSize + wordPad * (nameListObj.nameListSize - 1))) / 2
+        for (var i = 0; i < nameListObj.nameList.length; i++) {
+            var nameList = nameListObj.nameList[i].nameList
+            
+            for (var j = 0; j < nameList.length; j++) {
+                var name = nameList[j]
+                if (nameList.length > 1){
+                    context.setTextAlign("left")
+                    context.fillText(name, (showWidth - that.data.maxTextWidth)/2, firstHeight + tmpSize)
+                }else{
+                    context.setTextAlign("center")
+                    context.fillText(name, showWidth / 2, firstHeight + tmpSize)
+                }
+                firstHeight += tmpSize + wordPad
+                context.draw(true)
+            }
         }
 
         context.setFillStyle(bigwordTextColor)
         context.setFontSize(bigwordTextSize)
         context.setTextAlign("center")
+        context.setTextBaseline('bottom')
         context.fillText(bigwordText, showWidth / 2, showHeight - 10)
+        context.draw(true)
 
+        //context.setGlobalAlpha(0.8)
         context.drawImage(bigwordCode, showWidth - bigwordCodeSize, showHeight - bigwordCodeSize, bigwordCodeSize, bigwordCodeSize)
 
 
-        context.draw()
+        context.draw(true)
 
         //将生成好的图片保存到本地
         that.canvasToFile(cb)
@@ -317,7 +445,7 @@ Page({
         that.data.fontSize = e.detail.value
         that.data.sliderFontObj.value = that.data.fontSize
     },
-    frontIntervalClick: function(e){
+    frontIntervalClick: function (e) {
         var that = this
         that.data.wordPad = e.detail.value
     },
@@ -335,7 +463,7 @@ Page({
         if (that.data.nameList.length > 0) {
             that.data.nameList.pop()
             that.show(false)
-        }else{
+        } else {
             wx.showToast({
                 title: '请先添加文字',
                 icon: 'loading',
@@ -350,7 +478,7 @@ Page({
     },
     formSubmit: function (e) {
         var that = this;
-        if (that.data.name == "") {
+        if (e.detail.value.name == "") {
             wx.showToast({
                 title: '请先添加文字',
                 icon: 'loading',
@@ -358,6 +486,7 @@ Page({
             });
             return
         }
+        that.data.name = e.detail.value.name
         that.data.nameList = that.data.name.split("\n")
         that.show(true)
     }

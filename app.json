@@ -2,7 +2,6 @@
     "pages": [
         "page/black/index",
         "page/about/index",
-        "page/more/index",
         "page/more_simple/index",
         "page/logs/logs"
     ],

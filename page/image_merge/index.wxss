@@ -13,8 +13,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    overflow-y:scroll;
-
 }
 
 
@@ -117,7 +115,6 @@ button.bornbtn {
     margin: auto;
     margin-top:40rpx;
     margin-bottom:20rpx;
-    background-color:#FFFFFF;
 }
 
 button.addLinebtn {
@@ -126,36 +123,10 @@ button.addLinebtn {
 
 
 button.deleteLinebtn {
-    background-color:red;
+    background-color:Pink;
 }
 
 
 button.resetLinebtn {
     background-color:gray;
-}
-.textarea-wrp {
-    background-color: #fff;
-    width:100%;
-    padding: 0 25rpx;
-
-}
-.input-row-autoheight{
-    height:auto;
-}
-
-textarea.inputName  {
-    width:100%;
-    padding:25rpx 0;
-    text-align: left;
-    color:gray;
-    border:1px dashed #e0e0e0;
-    max-height:241px;
-}
-
-.block{
-    display: block;
-}
-
-.hide{
-    display: none;
 }
