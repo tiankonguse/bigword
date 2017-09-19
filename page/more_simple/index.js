@@ -1,5 +1,6 @@
 // pages/main/index.js
 var app = getApp()
+const imgLib = require('../../lib/img');
 Page({
     data: {
         title: "图文速成工具",
@@ -100,7 +101,7 @@ Page({
         }
         return {
             title: app.globalData.shareTitle,
-            path: '/page/black/index',
+            path: '/page/more_simple/index',
             success: function (res) {
                 // 转发成功
             },
@@ -140,7 +141,7 @@ Page({
         var defaultTmpWidth = 50;
         var tmpWidth = defaultTmpWidth;
         var oneWordWidth = 0;
-        that.data.maxTextWidth = 0
+        var maxTextWidth = 0
         for (var i = 0; i < name.length; i++) {
             var char = name[i];
             if (that.isAlpha(char)) {
@@ -149,8 +150,8 @@ Page({
                 oneWordWidth = wordWidthPad + fontSize;
             }
             if (tmpWidth + oneWordWidth >= showWidth) {
-                if (that.data.maxTextWidth == 0){
-                    that.data.maxTextWidth = tmpWidth - defaultTmpWidth - wordWidthPad
+                if (maxTextWidth == 0){
+                    maxTextWidth = tmpWidth - defaultTmpWidth - wordWidthPad
                 }
                 nameObj.nameList.push(tmpName)
                 tmpName = ""
@@ -162,6 +163,9 @@ Page({
         }
         if (tmpName.length > 0) {
             nameObj.nameList.push(tmpName)
+        }
+        if (maxTextWidth){
+            that.data.maxTextWidth = maxTextWidth
         }
 
         nameObj.height = nameObj.nameList.length * fontSize + (nameObj.nameList.length - 1) * wordHeightPad;
@@ -270,16 +274,19 @@ Page({
             })
         }
     },
-    removeSavedFile: function (cb){
+    removeSavedFile: function (cb) {
+        var that = this
         wx.getSavedFileList({
             success: function (res) {
                 if (res.fileList.length > 0) {
                     wx.removeSavedFile({
                         filePath: res.fileList[0].filePath,
-                        complete: function (res) {
-                            cb();
+                        success: function (res) {
+                            that.removeSavedFile(cb);
                         }
                     })
+                }else{
+                    cb();
                 }
             }
         })
@@ -303,7 +310,7 @@ Page({
                     console.log("saveFile fail", res);
                     wx.showModal({
                         title: '提示',
-                        content: '图片太大，请减少文字或字号',
+                        content: '图片太大，请减少文字或字号或重试',
                         success: function (res) {
                             if (cb) {
                                 cb(1)
@@ -374,6 +381,7 @@ Page({
         context.setTextAlign("center")
         context.setTextBaseline('bottom')
         var firstHeight = (showHeight - (nameListObj.nameListSize * tmpSize + wordPad * (nameListObj.nameListSize - 1))) / 2
+        //console.log(firstHeight, nameListObj, that.data)
         for (var i = 0; i < nameListObj.nameList.length; i++) {
             var nameList = nameListObj.nameList[i].nameList
             

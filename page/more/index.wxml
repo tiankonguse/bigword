@@ -4,8 +4,8 @@
         <view class="kind-list">
             <block>
                 <view class="kind-list-item">
-                    <view class="img-box">
-                        <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showWidth-30}}px; height:{{showWidth-30}}px;"></image>
+                    <view class="img-box" style="width:{{showWidth-30}}px; height:{{showHeight-30}}px;">
+                        <image bindtap="previewImg" src="{{imagePath}}" style="width:{{showImgWidth-30}}px; height:{{showImgHeight-30}}px;"></image>
                     </view>
                 </view>
             </block>
@@ -48,15 +48,26 @@
                             <slider name='fontSize' value="{{wordPad}}" min="3" max="31" step="2" show-value class="inputName slider-fontsize" bindchange="frontIntervalClick" />
                         </view>
                         <view class="input-row no-border-bottom">
+                            <label class="lableName">对齐</label>
+                            <radio-group name="radio" class="textAlignColor" bindchange="textAlignChange">
+                                <label>
+                                    <radio value="left" />左对齐</label>
+                                <label>
+                                    <radio value="center" checked="true" />居中</label>
+                                <label>
+                                    <radio value="right" />右对齐</label>
+                            </radio-group>
+                        </view>
+                        <view class="input-row input-row-autoheight no-border-bottom">
                             <label class="lableName">文字</label>
-                            <input name='name' type="text"  placeholder="{{defaultName}}" class="inputName input-word"  placeholder-class="input-word-placeholder" bindblur="textInputFinish" />
+                            <view class="textarea-wrp">
+                                <textarea name='name' placeholder="{{defaultName}}" class="inputName input-word" placeholder-class="input-word-placeholder" bindblur="textInputFinish" auto-height maxlength="-1" cursor-spacing="10" />
+                            </view>
                         </view>
-                        <view class="input-row no-border-bottom">
-                            <button bindtap="addLineClick" class="addLinebtn" type="default" plain="">添加一行</button>
-                            <button bindtap="deleteLineClick" class="deleteLinebtn" type="default" plain="">删除一行</button>
+                        <view class="input-row no-border-bottom submit-bottom-row">
+                            <button formType="submit" class="addLinebtn" type="default" plain="" id="add">添加一段</button>
+                            <button formType="submit" class="deleteLinebtn" type="default" plain="" id="delete">删除一段</button>
                         </view>
-                        
-                        <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
                     </form>
                 </view>
             </block>
@@ -65,7 +76,7 @@
         </view>
     </view>
     <view hidden="{{maskHidden}}" class="mask"></view>
-    <view class="canvas-box">
-        <canvas hidden="{{canvasHidden}}" style="width: 750rpx;height: 750rpx;" canvas-id="mycanvas" />
+    <view class="canvas-box {{canvasHidden?'hide':'block'}}">
+        <canvas style="width:{{showImgWidth}}px; height:{{showReadyImgHeight}}px;" canvas-id="mycanvas" />
     </view>
 </view>

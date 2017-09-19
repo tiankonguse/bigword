@@ -193,15 +193,18 @@ Page({
         }
     },
     removeSavedFile: function (cb) {
+        var that = this
         wx.getSavedFileList({
             success: function (res) {
                 if (res.fileList.length > 0) {
                     wx.removeSavedFile({
                         filePath: res.fileList[0].filePath,
-                        complete: function (res) {
-                            cb();
+                        success: function (res) {
+                            that.removeSavedFile(cb);
                         }
                     })
+                } else {
+                    cb();
                 }
             }
         })

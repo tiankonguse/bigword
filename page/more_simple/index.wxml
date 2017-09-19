@@ -50,7 +50,7 @@
                         <view class="input-row input-row-autoheight no-border-bottom">
                             <label class="lableName">文字</label>
                             <view class="textarea-wrp">
-                                <textarea name='name' placeholder="{{defaultName}}" class="inputName input-word" placeholder-class="input-word-placeholder" bindblur="textInputFinish" auto-height />
+                                <textarea name='name' placeholder="{{defaultName}}" class="inputName input-word" placeholder-class="input-word-placeholder" bindblur="textInputFinish" auto-height maxlength="-1" cursor-spacing="10" />
                             </view>
                         </view>
                        <button formType="submit" class="bornbtn" type="default" plain="">{{btnText}}</button>
