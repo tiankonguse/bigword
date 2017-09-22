@@ -82,7 +82,7 @@ Page({
         },
         bigwordCode: "/image/logo_white.png",
         bigwordCodeSize: 80,
-        bigwordText: "来自小程序 图文速成工具",
+        bigwordText: "", 
         bigwordTextSize: 12,
         bigwordTextColor: "Gray"
     },
@@ -157,37 +157,29 @@ Page({
         var screenHeight = screenWidth
 
 
+        var data = {
+            bigwordText: app.globalData.bigwordText,
+            userInfo: app.globalData.userInfo,
+            hasUserInfo: true,
+            systemInfo: systemInfo,
+            showWidth: screenWidth,
+            showHeight: screenHeight
+        }
 
         if (app.globalData.userInfo) {
-            that.setData({
-                userInfo: app.globalData.userInfo,
-                hasUserInfo: true,
-                systemInfo: systemInfo,
-                showWidth: screenWidth,
-                showHeight: screenHeight
-            })
+            that.setData(data)
         } else if (this.data.canIUse) {
             app.userInfoReadyCallback = res => {
-                that.setData({
-                    userInfo: res.userInfo,
-                    hasUserInfo: true,
-                    systemInfo: systemInfo,
-                    showWidth: screenWidth,
-                    showHeight: screenHeight
-                })
+                data.userInfo = res.userInfo
+                that.setData(data)
             }
         } else {
             // 在没有 open-type=getUserInfo 版本的兼容处理
             wx.getUserInfo({
                 success: res => {
                     app.globalData.userInfo = res.userInfo
-                    that.setData({
-                        userInfo: res.userInfo,
-                        hasUserInfo: true,
-                        systemInfo: systemInfo,
-                        showWidth: screenWidth,
-                        showHeight: screenHeight
-                    })
+                    data.userInfo = res.userInfo
+                    that.setData(data)
                 }
             })
         }
@@ -278,6 +270,7 @@ Page({
         var fontColor = that.data.toFrontColorView
         var fillColor = that.data.toBackColorView
         var bigwordText = that.data.bigwordText
+        var bigwordText2 = "图文速成工具"
         var bigwordTextSize = that.data.bigwordTextSize
         var bigwordTextColor = that.data.bigwordTextColor
         var name = that.data.name
@@ -297,10 +290,14 @@ Page({
         context.setTextAlign("center")
         context.fillText(name, showWidth / 2, (showHeight + fontSize/2) / 2)
 
+
+
         context.setFillStyle(bigwordTextColor)
         context.setFontSize(bigwordTextSize)
         context.setTextAlign("center")
         context.fillText(bigwordText, showWidth / 2, showHeight - 10)
+        context.fillText(bigwordText2, showWidth / 2, showHeight - (bigwordTextSize + 20))
+
 
         context.drawImage(bigwordCode, showWidth - bigwordCodeSize, showHeight - bigwordCodeSize, bigwordCodeSize, bigwordCodeSize)
 

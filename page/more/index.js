@@ -88,7 +88,7 @@ Page({
         },
         bigwordCode: "/image/logo_white.png",
         bigwordCodeSize: 80,
-        bigwordText: "来自小程序 图文速成工具",
+        bigwordText: "", 
         bigwordTextSize: 12,
         bigwordTextColor: "Gray",
         nameList: [],
@@ -206,7 +206,7 @@ Page({
             "nameListSize": 0,
             "nameList": []
         }
-        var realHeight = 100
+        var realHeight = 30
         for (var i = 0; i < that.data.nameList.length; i++) {
             var nameObj = that.getNameHeight(that.data.nameList[i])
             realHeight += nameObj.height
@@ -263,6 +263,7 @@ Page({
         var screenHeight = screenWidth
 
         var data = {
+            bigwordText: app.globalData.bigwordText,
             userInfo: app.globalData.userInfo,
             hasUserInfo: true,
             systemInfo: systemInfo,
@@ -379,6 +380,7 @@ Page({
         var fontColor = that.data.toFrontColorView
         var fillColor = that.data.toBackColorView
         var bigwordText = that.data.bigwordText
+        var bigwordText2 = "图文速成工具"
         var bigwordTextSize = that.data.bigwordTextSize
         var bigwordTextColor = that.data.bigwordTextColor
         var bigwordCodeSize = that.data.bigwordCodeSize
@@ -443,6 +445,7 @@ Page({
         context.setTextAlign("center")
         context.setTextBaseline('bottom')
         context.fillText(bigwordText, showWidth / 2, showHeight - 10)
+        context.fillText(bigwordText2, showWidth / 2, showHeight - (bigwordTextSize + 20))
         context.draw(true)
 
         //context.setGlobalAlpha(0.8)

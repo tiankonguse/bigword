@@ -15,7 +15,8 @@ App({
         AppID: "wxe9d370b20c760b2c",
         AppSecret: "4ffcf61f4e159300cb4edead77480b1a",
         shareTitle: "图文速成工具",
-        systemInfo: {}
+        systemInfo: {},
+        bigwordText: "长按此图制作自己的图片"
     },
     getUserInfo: function (res){
         var app = this;

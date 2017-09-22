@@ -7,8 +7,8 @@ Page({
         desc: "by tiankonguse",
         btnText: "一键速成",
         lableName: "你的图文",
-        imagePath: "/image/more.jpg",
-        defaultImagePath: "/image/more.jpg",
+        imagePath: "/image/more_sampe.jpg",
+        defaultImagePath: "/image/more_sampe.jpg",
         name: "朋友圈专用图",
         defaultName: "在此输入多行文本，支持表情哦",
         maskHidden: true,
@@ -86,7 +86,7 @@ Page({
         },
         bigwordCode: "/image/logo_white.png",
         bigwordCodeSize: 80,
-        bigwordText: "来自小程序 图文速成工具",
+        bigwordText: "", 
         bigwordTextSize: 12,
         bigwordTextColor: "Gray",
         nameList: [],
@@ -247,6 +247,7 @@ Page({
         var screenHeight = screenWidth
 
         var data = {
+            bigwordText: app.globalData.bigwordText,
             userInfo: app.globalData.userInfo,
             hasUserInfo: true,
             systemInfo: systemInfo,
@@ -362,6 +363,7 @@ Page({
         var fontColor = that.data.toFrontColorView
         var fillColor = that.data.toBackColorView
         var bigwordText = that.data.bigwordText
+        var bigwordText2 = "图文速成工具"
         var bigwordTextSize = that.data.bigwordTextSize
         var bigwordTextColor = that.data.bigwordTextColor
         var bigwordCodeSize = that.data.bigwordCodeSize
@@ -389,9 +391,11 @@ Page({
                 var name = nameList[j]
                 if (nameList.length > 1){
                     context.setTextAlign("left")
+                    console.log(i, j, name, name.length)
                     context.fillText(name, (showWidth - that.data.maxTextWidth)/2, firstHeight + tmpSize)
                 }else{
                     context.setTextAlign("center")
+                    console.log(i, j, name,  name.length)
                     context.fillText(name, showWidth / 2, firstHeight + tmpSize)
                 }
                 firstHeight += tmpSize + wordPad
@@ -404,6 +408,7 @@ Page({
         context.setTextAlign("center")
         context.setTextBaseline('bottom')
         context.fillText(bigwordText, showWidth / 2, showHeight - 10)
+        context.fillText(bigwordText2, showWidth / 2, showHeight - (bigwordTextSize + 20))
         context.draw(true)
 
         //context.setGlobalAlpha(0.8)
